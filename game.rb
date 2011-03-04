@@ -29,13 +29,16 @@ class Game
         
         @background = Background.new(@screen.width, @screen.height)
         
-        @player1 = Paddle.new(50, 10)
+        wallThickness = 10
+        y_upLimit = wallThickness
+        y_downLimit = @screen.height - wallThickness
+        @player1 = Paddle.new(50, 10, Rubygame::K_W, Rubygame::K_S, y_upLimit, y_downLimit)
         @player1.center_y(@screen.height)
         
-        @player2 = Paddle.new(@screen.width-50-@player1.width, 10)
+        @player2 = Paddle.new(@screen.width-50-@player1.width, 10, Rubygame::K_UP, Rubygame::K_DOWN, y_upLimit, y_downLimit)
         @player2.center_y(@screen.height)
     end
-    
+
     def run!
         loop do
             update
@@ -43,9 +46,15 @@ class Game
             @clock.tick
         end
     end
-    
+
     def update
+        @player1.update
+        @player2.update
+    
         @queue.each do |event|
+            @player1.handle_event(event)
+            @player2.handle_event(event)
+            
             case event
                 # close window button / ALT+F4
                 when Rubygame::QuitEvent
