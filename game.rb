@@ -29,13 +29,12 @@ class Game
         
         @background = Background.new(@screen.width, @screen.height)
         
-        wallThickness = 10
-        y_upLimit = wallThickness
-        y_downLimit = @screen.height - wallThickness
+        borderPx = 10
+        y_upLimit = borderPx
+        y_downLimit = @screen.height - borderPx
         @player1 = Paddle.new(50, 10, Rubygame::K_W, Rubygame::K_S, y_upLimit, y_downLimit)
-        @player1.center_y(@screen.height)
-        
         @player2 = Paddle.new(@screen.width-50-@player1.width, 10, Rubygame::K_UP, Rubygame::K_DOWN, y_upLimit, y_downLimit)
+        @player1.center_y(@screen.height)
         @player2.center_y(@screen.height)
     end
 
@@ -56,6 +55,11 @@ class Game
             @player2.handle_event(event)
             
             case event
+                when Rubygame::KeyDownEvent
+                    # wire ESC to quit
+                    if event.key == Rubygame::K_ESCAPE
+                        @queue.push(Rubygame::QuitEvent.new)
+                    end
                 # close window button / ALT+F4
                 when Rubygame::QuitEvent
                     Rubygame.quit

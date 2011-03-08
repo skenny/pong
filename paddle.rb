@@ -7,7 +7,7 @@ class Paddle < GameObject
     @@movementSpeed = 5
 
     def initialize(x, y, upKey, downKey, y_upLimit, y_downLimit)
-        puts "constructing paddle(#{x}, #{y}, #{upKey}, #{downKey}, #{y_upLimit}, #{y_downLimit}"
+        #puts "constructing paddle(#{x}, #{y}, #{upKey}, #{downKey}, #{y_upLimit}, #{y_downLimit})"
     
         surface = Rubygame::Surface.new([20, 100])
         surface.fill([255, 255, 255])
