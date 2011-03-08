@@ -18,17 +18,30 @@ class Ball < GameObject
         super(x, y, surface)
     end
 
-    def update
+    def update(screen, player1, player2)
         @x += @vx
         @y += @vy
         
-        if @x <= @x_lowLimit or @x+@width >= @x_highLimit
-            @vx *= -1
+        if @x <= @x_lowLimit
+            player2.score += 1
+            score(screen)
+        end
+        
+        if @x+@width >= @x_highLimit
+            player1.score += 1
+            score(screen)
         end
         
         if @y <= @y_lowLimit or @y+@height >= @y_highLimit
             @vy *= -1
         end        
+    end
+
+    def score(screen)
+        @vx *= -1
+        
+        @x = screen.width/4 + rand(screen.width/2)
+        @y = rand(screen.height-50)+25
     end
 
     def collision(obj, screen)

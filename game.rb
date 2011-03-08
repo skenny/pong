@@ -59,7 +59,7 @@ class Game
     def update
         @player1.update
         @player2.update
-        @ball.update
+        @ball.update(@screen, @player1, @player2)
     
         @queue.each do |event|
             @player1.handle_event(event)
