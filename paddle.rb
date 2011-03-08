@@ -6,7 +6,7 @@ class Paddle < GameObject
 
     @@movementSpeed = 5
 
-    def initialize(x, y, upKey, downKey, y_upLimit, y_downLimit)
+    def initialize(x, y, score_x, score_y, upKey, downKey, y_upLimit, y_downLimit)
         #puts "constructing paddle(#{x}, #{y}, #{upKey}, #{downKey}, #{y_upLimit}, #{y_downLimit})"
     
         surface = Rubygame::Surface.new([20, 100])
@@ -21,11 +21,10 @@ class Paddle < GameObject
         @movingUp = false
         @movingDown = false
         
+        @score = 0
+        @scoreText = Text.new(score_x, score_y, @score.to_s, 48)
+        
         super(x, y, surface)
-    end
-
-    def center_y(h)
-        @y = h/2-@height/2
     end
 
     def handle_event(event)
@@ -55,6 +54,24 @@ class Paddle < GameObject
         if @movingDown and @y < @y_downLimit-@height
             @y += @@movementSpeed
         end
+    end
+
+    def draw(screen)
+        super(screen)
+        @scoreText.draw(screen)
+    end
+
+    def center_y(h)
+        @y = h/2-@height/2
+    end
+
+    def score
+        @score
+    end
+    
+    def score=(n)
+        @score = n
+        @scoreText.text = @score.to_s
     end
 
 end

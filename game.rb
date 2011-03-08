@@ -5,6 +5,10 @@ require 'rubygame'
 require 'background.rb'
 require 'paddle.rb'
 require 'ball.rb'
+require 'text.rb'
+
+# prep fonts
+Rubygame::TTF.setup
 
 =begin
 
@@ -36,8 +40,8 @@ class Game
         x_highLimit = @screen.width - borderPx
         y_highLimit = @screen.height - borderPx
 
-        @player1 = Paddle.new(50, 10, Rubygame::K_W, Rubygame::K_S, y_lowLimit, y_highLimit)
-        @player2 = Paddle.new(@screen.width-50-@player1.width, 10, Rubygame::K_UP, Rubygame::K_DOWN, y_lowLimit, y_highLimit)
+        @player1 = Paddle.new(50, 10, @screen.width*0.20, 35, Rubygame::K_W, Rubygame::K_S, y_lowLimit, y_highLimit)
+        @player2 = Paddle.new(@screen.width-50-@player1.width, 10, @screen.width*0.70, 35, Rubygame::K_UP, Rubygame::K_DOWN, y_lowLimit, y_highLimit)
         @player1.center_y(@screen.height)
         @player2.center_y(@screen.height)
         
