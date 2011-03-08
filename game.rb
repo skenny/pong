@@ -4,6 +4,7 @@ require 'rubygems'
 require 'rubygame'
 require 'background.rb'
 require 'paddle.rb'
+require 'ball.rb'
 
 =begin
 
@@ -29,13 +30,18 @@ class Game
         
         @background = Background.new(@screen.width, @screen.height)
         
-        borderPx = 10
-        y_upLimit = borderPx
-        y_downLimit = @screen.height - borderPx
-        @player1 = Paddle.new(50, 10, Rubygame::K_W, Rubygame::K_S, y_upLimit, y_downLimit)
-        @player2 = Paddle.new(@screen.width-50-@player1.width, 10, Rubygame::K_UP, Rubygame::K_DOWN, y_upLimit, y_downLimit)
+        # calculate movement limits for player & ball game objects
+        borderPx = @background.lineWidth
+        x_lowLimit = y_lowLimit = borderPx
+        x_highLimit = @screen.width - borderPx
+        y_highLimit = @screen.height - borderPx
+
+        @player1 = Paddle.new(50, 10, Rubygame::K_W, Rubygame::K_S, y_lowLimit, y_highLimit)
+        @player2 = Paddle.new(@screen.width-50-@player1.width, 10, Rubygame::K_UP, Rubygame::K_DOWN, y_lowLimit, y_highLimit)
         @player1.center_y(@screen.height)
         @player2.center_y(@screen.height)
+        
+        @ball = Ball.new(@screen.width/2, @screen.height/2, x_lowLimit, x_highLimit, y_lowLimit, y_highLimit)
     end
 
     def run!
@@ -49,10 +55,12 @@ class Game
     def update
         @player1.update
         @player2.update
+        @ball.update
     
         @queue.each do |event|
             @player1.handle_event(event)
             @player2.handle_event(event)
+            @ball.handle_event(event)
             
             case event
                 when Rubygame::KeyDownEvent
@@ -77,6 +85,7 @@ class Game
         @background.draw(@screen)
         @player1.draw(@screen)
         @player2.draw(@screen)
+        @ball.draw(@screen)
         
         # drawing is done "off-screen", so we have to flip() it into view
         @screen.flip
