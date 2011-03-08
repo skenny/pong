@@ -74,6 +74,12 @@ class Game
                     exit
             end
         end
+        
+        if collision?(@ball, @player1)
+            @ball.collision(@player1, @screen)
+        elsif collision?(@ball, @player2)
+            @ball.collision(@player2, @screen)
+        end
     end
 
     def draw
@@ -89,6 +95,30 @@ class Game
         
         # drawing is done "off-screen", so we have to flip() it into view
         @screen.flip
+    end
+
+    def collision?(obj1, obj2)
+        # if the bottom of obj1 is higher than the top of obj2
+        if (obj1.y + obj1.height < obj2.y)
+            return false
+        end
+        
+        # if the top of obj1 is lower than the bottom of obj2
+        if (obj1.y > obj2.y + obj2.height)
+            return false
+        end
+        
+        # if the right of obj1 is to the right of the right of obj2
+        if (obj1.x + obj1.width < obj2.x)
+            return false
+        end
+        
+        # if the left of obj1 is to the right of the right of obj2
+        if (obj1.x > obj2.x + obj2.width)
+            return false
+        end
+        
+        return true
     end
 
 end

@@ -31,5 +31,23 @@ class Ball < GameObject
         end        
     end
 
+    def collision(obj, screen)
+        # TODO get rid of the screen ref, there must be a nicer way to do this
+        
+        if (obj.x < screen.width/2)
+            # left paddle
+            unless @x < obj.x-5
+                @x = obj.x + obj.width + 1
+                @vx *= -1
+            end
+        else
+            # right paddle
+            unless @x > obj.x+5
+                @x = obj.x - @width-1
+                @vx *= -1
+            end
+        end
+    end
+
 end
 
